@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="theme-color" content="#0d3d6b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Que horas sair?">
+<title>Que horas sair?</title>
+<style>
+  :root{
+    --bg:#f1f2ed; --card:#ffffff; --ink:#16202b; --muted:#6c7886;
+    --line:#e6e8e1; --accent:#185FA5; --accent2:#1a7a8a;
+    --field:#f6f7f2; --shadow:0 8px 26px rgba(20,40,60,.09);
+  }
+  body.dark{
+    --bg:#0e151d; --card:#18222d; --ink:#e8eef5; --muted:#93a1b0;
+    --line:#26333f; --field:#101924; --shadow:0 8px 26px rgba(0,0,0,.38);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,system-ui,"Segoe UI",Roboto,sans-serif;
+    background:var(--bg);color:var(--ink);
+    -webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;
+  }
+  .header{
+    background:linear-gradient(135deg,#0d3d6b,#185FA5,#1a7a8a);
+    color:#fff;padding:calc(env(safe-area-inset-top) + 22px) 20px 24px;
+    border-radius:0 0 28px 28px;position:relative;
+  }
+  .header h1{margin:0;font-size:1.4rem;font-weight:750;letter-spacing:.2px}
+  .theme{
+    position:absolute;top:calc(env(safe-area-inset-top) + 16px);right:16px;
+    background:rgba(255,255,255,.18);border:0;color:#fff;width:42px;height:42px;
+    border-radius:50%;font-size:1.15rem;cursor:pointer
+  }
+  .wrap{max-width:540px;margin:0 auto;padding:16px 16px 186px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;margin-top:14px;box-shadow:var(--shadow)}
+  .seclbl{font-size:.74rem;color:var(--muted);font-weight:750;letter-spacing:.6px;text-transform:uppercase;margin:0 4px 8px}
+  label.f{display:block;font-size:.82rem;color:var(--muted);margin:0 0 6px;font-weight:650}
+  input.text,input.time{
+    width:100%;border:1.5px solid var(--line);background:var(--field);color:var(--ink);
+    border-radius:13px;padding:13px 14px;font-size:1.05rem;font-family:inherit;outline:none
+  }
+  input.text:focus,input.time:focus{border-color:var(--accent2)}
+  input.time{font-size:1.45rem;font-weight:700;text-align:center;letter-spacing:1px}
+
+  /* welcome (home) */
+  .welcome{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:28px 22px;text-align:center;box-shadow:var(--shadow);margin-top:18px}
+  .welcome .wave{font-size:2.1rem}
+  .welcome h2{margin:6px 0 10px;font-size:1.45rem}
+  .welcome p{margin:0;color:var(--ink);opacity:.85;font-size:1.02rem;line-height:1.6}
+
+  /* template cards */
+  .tplcard{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:10px;box-shadow:var(--shadow);cursor:pointer}
+  .tplcard .tc-main{flex:1;min-width:0}
+  .tplcard .tc-name{font-weight:700;font-size:1.06rem}
+  .tplcard .tc-sub{color:var(--muted);font-size:.82rem;margin-top:2px}
+  .tplcard .tc-del{flex:0 0 auto;border:0;background:transparent;color:var(--muted);font-size:1rem;padding:6px 8px;cursor:pointer;border-radius:9px}
+  .tplcard .tc-del.armed{color:#ea580c;background:rgba(234,88,12,.09);font-weight:700;font-size:.8rem}
+  .tplcard .tc-go{flex:0 0 auto;color:var(--muted);font-size:1.4rem;font-weight:700}
+  .tpl-empty{color:var(--muted);font-size:.92rem;line-height:1.5;background:var(--card);border:1.5px dashed var(--line);border-radius:16px;padding:20px;text-align:center;margin-top:10px}
+
+  /* calc top */
+  .calc-top{display:flex;justify-content:space-between;align-items:center;padding-top:4px}
+  .backbtn,.resetbtn{border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:8px 14px;font-size:.88rem;font-weight:650;cursor:pointer}
+  .resetbtn{color:var(--muted)}
+  .resetbtn.armed{border-color:#ea580c;color:#ea580c;background:rgba(234,88,12,.06)}
+
+  /* blocks */
+  .block{background:var(--field);border:1px solid var(--line);border-radius:14px;padding:12px 12px 10px;margin-top:10px}
+  .block-top{display:flex;gap:8px;align-items:center}
+  .block-label{flex:1;border:0;background:transparent;color:var(--ink);font-size:1.02rem;font-weight:650;font-family:inherit;padding:4px 2px;outline:none}
+  .rm{border:0;background:transparent;color:var(--muted);font-size:1.05rem;padding:4px 8px;cursor:pointer}
+  .dur{display:flex;align-items:center;gap:7px;margin-top:4px;flex-wrap:wrap}
+  .dur .dl{font-size:.76rem;color:var(--muted);font-weight:650;min-width:52px}
+  .dur input{width:54px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:8px 4px;text-align:center;font-size:1.02rem;font-family:inherit;outline:none}
+  .dur input:focus{border-color:var(--accent2)}
+  .dur .u{font-size:.85rem;color:var(--muted);font-weight:600}
+  .dur .step{border:1.5px solid var(--line);background:var(--card);color:var(--ink);width:36px;height:36px;border-radius:9px;font-size:1.2rem;line-height:1;cursor:pointer}
+  .addrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px}
+  .addrow button{border:1.5px dashed var(--line);background:transparent;color:var(--accent);border-radius:999px;padding:8px 13px;font-size:.88rem;font-weight:650;cursor:pointer}
+  .addrow button[data-custom]{border-style:solid;background:var(--accent);border-color:var(--accent);color:#fff}
+
+  /* hero */
+  .hero{background:linear-gradient(135deg,#185FA5,#1a7a8a);color:#fff;border-radius:22px;padding:26px 18px;margin-top:16px;text-align:center;box-shadow:var(--shadow)}
+  .hero .lbl{font-size:.92rem;opacity:.92;font-weight:650;letter-spacing:.3px}
+  .hero .big{font-size:3.4rem;font-weight:850;letter-spacing:1px;line-height:1;margin:8px 0 4px;font-variant-numeric:tabular-nums}
+  .hero .sub{font-size:.9rem;opacity:.92}
+  .hero .warm{margin-top:12px;font-size:.86rem;opacity:.9;font-style:italic}
+  .badge{display:inline-block;background:rgba(255,255,255,.24);border-radius:8px;padding:2px 9px;font-size:.72rem;font-weight:700;margin-left:7px;vertical-align:middle;letter-spacing:.4px}
+  .hero.empty{background:var(--card);color:var(--muted);border:1.5px dashed var(--line);box-shadow:none}
+  .hero.empty .big{font-size:2.2rem;color:var(--muted)}
+  .hero.warn{background:linear-gradient(135deg,#c2410c,#ea580c)}
+
+  /* timeline */
+  .timeline{margin-top:6px}
+  #tlblocks{position:relative}
+  .tl{display:flex;gap:12px;align-items:flex-start;position:relative}
+  .tl .t{min-width:62px;font-weight:750;font-size:1.02rem;padding-top:1px;font-variant-numeric:tabular-nums}
+  .tl .col{display:flex;flex-direction:column;align-items:center;flex:0 0 auto}
+  .tl .dot{width:13px;height:13px;border-radius:50%;background:var(--accent2);margin-top:4px;border:2px solid var(--card)}
+  .tl .line{width:2px;flex:1;background:var(--line);min-height:18px}
+  .tl .ln{flex:1;font-size:.97rem;padding:1px 0 14px}
+  .tl .ln small{color:var(--muted);font-size:.8rem}
+  .tl.start .dot,.tl.arrive .dot{background:var(--accent);width:15px;height:15px}
+  .tl.start .ln,.tl.arrive .ln{font-weight:750}
+  .tlb .grip{flex:0 0 auto;border:0;background:transparent;color:var(--muted);font-size:1.25rem;line-height:1;letter-spacing:-4px;padding:0 2px 14px 6px;cursor:grab;touch-action:none;align-self:flex-start}
+  .tlb.dragging{opacity:.96;background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);position:relative;z-index:5}
+  .tlb.dragging .line{visibility:hidden}
+  .drop-line{position:absolute;left:8px;right:8px;height:3px;border-radius:3px;background:var(--accent);box-shadow:0 0 0 3px rgba(24,95,165,.18);pointer-events:none;z-index:6}
+  .hint{color:var(--muted);font-size:.81rem;margin:10px 4px 0;line-height:1.4}
+
+  /* save as template */
+  .btn-outline{width:100%;border:1.5px solid var(--accent);background:var(--card);color:var(--accent);border-radius:13px;padding:13px;font-size:1rem;font-weight:700;cursor:pointer}
+  .btn-primary{width:100%;border:0;background:linear-gradient(135deg,#185FA5,#1a7a8a);color:#fff;border-radius:13px;padding:14px;font-size:1.02rem;font-weight:700;cursor:pointer}
+  .seg{display:flex;gap:8px}
+  .segbtn{flex:1;border:1.5px solid var(--line);background:var(--field);color:var(--ink);border-radius:12px;padding:11px;font-size:.9rem;font-weight:650;cursor:pointer}
+  .segbtn.active{background:var(--accent);border-color:var(--accent);color:#fff}
+
+  /* FAB */
+  .fab{position:fixed;right:18px;bottom:112px;width:62px;height:62px;border-radius:50%;border:0;background:linear-gradient(135deg,#185FA5,#1a7a8a);color:#fff;font-size:2rem;line-height:1;box-shadow:0 10px 28px rgba(24,95,165,.45);cursor:pointer;z-index:50;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+  @media (display-mode: standalone){ .fab{bottom:calc(env(safe-area-inset-bottom) + 30px)} }
+  .sheet-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.42);z-index:60;display:none}
+  .sheet{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-radius:24px 24px 0 0;z-index:61;padding:10px 16px calc(env(safe-area-inset-bottom) + 18px);transform:translateY(110%);transition:transform .26s ease;max-height:78vh;overflow:auto;box-shadow:0 -10px 30px rgba(0,0,0,.18)}
+  .sheet.open{transform:translateY(0)}
+  .sheet:not(.open){pointer-events:none}
+  .sheet-handle{width:42px;height:5px;border-radius:5px;background:var(--line);margin:6px auto 12px}
+  .sheet-item{width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:2px;border:1.5px solid var(--line);background:var(--field);color:var(--ink);border-radius:14px;padding:14px;margin-top:8px;font-size:1.04rem;font-weight:700;cursor:pointer;text-align:left}
+  .sheet-item.new{background:var(--accent);border-color:var(--accent);color:#fff}
+  .sheet-item .si-sub{font-size:.8rem;font-weight:600;color:var(--muted)}
+  .sheet-item.new .si-sub{color:rgba(255,255,255,.85)}
+  .sheet-sub{font-size:.74rem;color:var(--muted);font-weight:750;letter-spacing:.6px;text-transform:uppercase;margin:16px 4px 2px}
+
+  /* toast */
+  .toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 96px);transform:translateX(-50%) translateY(16px);background:#16202b;color:#fff;padding:11px 18px;border-radius:999px;font-size:.9rem;font-weight:600;opacity:0;transition:.25s;z-index:70;pointer-events:none}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  body.dark .toast{background:#0a0f15;border:1px solid var(--line)}
+</style>
+</head>
+<body>
+  <div class="header">
+    <button class="theme" id="theme" aria-label="Tema">🌙</button>
+    <h1>Que horas sair?</h1>
+  </div>
+
+  <div class="wrap">
+
+    <!-- HOME -->
+    <div id="home">
+      <div class="welcome">
+        <div class="wave">💙</div>
+        <h2>Oi amor</h2>
+        <p>Fiz isso pensando em você — pra te deixar tranquila e sempre no horário, sem correria. Toca no <b>+</b> pra montar um horário ou abrir teus modelos. Te amo. 💙</p>
+      </div>
+      <div class="seclbl" style="margin-top:18px">Seus modelos</div>
+      <div id="tplCards"></div>
+    </div>
+
+    <!-- CALC -->
+    <div id="calc" style="display:none">
+      <div class="calc-top">
+        <button id="back" class="backbtn">‹ Início</button>
+        <button id="reset" class="resetbtn">↺ Limpar</button>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <label class="f" for="event">O que é? <span style="font-weight:500">(opcional)</span></label>
+        <input class="text" id="event" placeholder="Ex.: Voo, Massagem, Médico da Aurora" autocomplete="off">
+        <div style="height:14px"></div>
+        <label class="f" for="compromisso">Que horas é o compromisso? <span style="color:#e5484d">*</span></label>
+        <input class="time" id="compromisso" type="time">
+        <div style="height:14px"></div>
+        <label class="f" for="anchor">Que horas quero chegar? <span style="color:#e5484d">*</span></label>
+        <input class="time" id="anchor" type="time">
+      </div>
+
+      <div class="seclbl" style="margin-top:18px">O que vem antes</div>
+      <div class="card">
+        <div id="blocks"></div>
+        <div class="addrow" id="addrow">
+          <button data-custom>+ Adicionar</button>
+          <button data-add="Tempo de viagem|0|20">+ Viagem</button>
+          <button data-add="Margem de segurança|0|30">+ Margem</button>
+          <button data-add="Corrida|0|40">+ Corrida</button>
+          <button data-add="Banho|0|15">+ Banho</button>
+          <button data-add="Arrumar|0|20">+ Arrumar</button>
+          <button data-add="Trânsito|0|15">+ Trânsito</button>
+        </div>
+      </div>
+
+      <div class="hero empty" id="hero">
+        <div class="lbl">Saia às</div>
+        <div class="big" id="result">--h--</div>
+        <div class="sub" id="resultSub">Preencha os 2 horários acima ☝️</div>
+        <div class="warm" id="warm"></div>
+      </div>
+
+      <div class="seclbl" style="margin-top:18px">Seu roteiro</div>
+      <div class="card">
+        <div class="timeline" id="timeline"></div>
+      </div>
+
+      <div class="hint">Dica: arraste pelo <b>⋮⋮</b> para reordenar as etapas do meio. "Largar tudo e começar" e "Chegar" ficam fixos — e o horário de saída nunca muda. 💙</div>
+
+      <div class="card">
+        <button id="saveTplBtn" class="btn-outline">💾 Salvar como modelo</button>
+        <div id="saveForm" style="display:none">
+          <label class="f" for="tplName">Nome do modelo <span style="color:#e5484d">*</span></label>
+          <input class="text" id="tplName" placeholder="Ex.: Aula de Inglês" autocomplete="off">
+          <div style="height:14px"></div>
+          <label class="f">O horário é sempre o mesmo?</label>
+          <div class="seg">
+            <button type="button" data-fix="1" class="segbtn active">Sim, fixo</button>
+            <button type="button" data-fix="0" class="segbtn">Não, muda toda vez</button>
+          </div>
+          <div class="hint" style="margin-top:10px">Modelos que mudam guardam só a <b>antecedência</b> (ex.: chegar 5 min antes). Da próxima vez é só digitar o novo horário e o "quero chegar" se ajusta sozinho.</div>
+          <div style="height:14px"></div>
+          <button id="saveTplConfirm" class="btn-primary">Salvar modelo 💙</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <button type="button" class="fab" id="fab" aria-label="Novo">+</button>
+
+  <div class="sheet-backdrop" id="backdrop"></div>
+  <div class="sheet" id="sheet">
+    <div class="sheet-handle"></div>
+    <button class="sheet-item new" id="sheetNew"><span>✏️ Novo cálculo</span><span class="si-sub">Começar do zero</span></button>
+    <div class="sheet-sub">Seus modelos</div>
+    <div id="sheetTpls"></div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+  var $=function(s){return document.querySelector(s);};
+  function onTap(el, fn){
+    if(!el) return;
+    var sx=0, sy=0, moved=false;
+    el.addEventListener("click", fn);
+    el.addEventListener("touchstart", function(e){ var t=e.touches&&e.touches[0]; if(!t)return; sx=t.clientX; sy=t.clientY; moved=false; }, {passive:true});
+    el.addEventListener("touchmove", function(e){ var t=e.touches&&e.touches[0]; if(!t)return; if(Math.abs(t.clientX-sx)>10||Math.abs(t.clientY-sy)>10) moved=true; }, {passive:true});
+    el.addEventListener("touchend", function(e){ if(moved)return; e.preventDefault(); fn(e); }, {passive:false});
+  }
+  var THEME_KEY="qhs_theme", TPL_KEY="qhs_templates";
+  var blocks=[], uid=1, tplAnte=null, fixSel=true, toastTimer=null;
+
+  /* ---- helpers ---- */
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+  function pad(n){return (n<10?"0":"")+n;}
+  function fmtClock(min){ var d=0; while(min<0){min+=1440;d--;} while(min>=1440){min-=1440;d++;} return {s:pad(Math.floor(min/60))+"h"+pad(min%60), d:d}; }
+  function fmtDur(min){ var h=Math.floor(min/60), m=min%60; if(h&&m)return h+"h "+m+"min"; if(h)return h+"h"; return m+"min"; }
+  function toMin(s){ var p=s.split(":"); return parseInt(p[0],10)*60+parseInt(p[1],10); }
+  function toHHMM(m){ m=((m%1440)+1440)%1440; return pad(Math.floor(m/60))+":"+pad(m%60); }
+  function toast(msg){ var t=$("#toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(toastTimer); toastTimer=setTimeout(function(){t.classList.remove("show");},1900); }
+
+  /* ---- templates storage ---- */
+  function getTpls(){ try{return JSON.parse(localStorage.getItem(TPL_KEY))||[];}catch(e){return [];} }
+  function setTpls(a){ try{localStorage.setItem(TPL_KEY,JSON.stringify(a));}catch(e){} }
+  function tplSubtitle(t){
+    var parts=[];
+    parts.push(t.fixedComp!=null ? "sempre "+fmtClock(t.fixedComp).s : "horário muda");
+    var n=(t.etapas||[]).length;
+    parts.push(n+(n===1?" etapa":" etapas"));
+    return parts.join(" • ");
+  }
+
+  /* ---- views ---- */
+  function showHome(){ $("#home").style.display=""; $("#calc").style.display="none"; renderTplCards(); window.scrollTo(0,0); }
+  function showCalc(){ $("#home").style.display="none"; $("#calc").style.display=""; window.scrollTo(0,0); }
+
+  function openNew(){
+    tplAnte=null;
+    $("#event").value=""; $("#compromisso").value=""; $("#anchor").value="";
+    blocks=[{id:uid++,label:"Tempo de viagem",h:0,m:20},{id:uid++,label:"Margem de segurança",h:0,m:15}];
+    hideSaveForm(); renderBlocks(); compute(); showCalc();
+  }
+  function openTpl(t){
+    $("#event").value=t.name||"";
+    blocks=(t.etapas||[]).map(function(b){return {id:uid++,label:b[0],h:b[1],m:b[2]};});
+    if(t.fixedComp!=null){
+      tplAnte=null;
+      $("#compromisso").value=toHHMM(t.fixedComp);
+      $("#anchor").value=toHHMM(t.fixedComp-(t.anteMin||0));
+    }else{
+      tplAnte=(t.anteMin||0);
+      $("#compromisso").value=""; $("#anchor").value="";
+    }
+    hideSaveForm(); renderBlocks(); compute(); showCalc();
+  }
+
+  /* ---- template cards (home) ---- */
+  function renderTplCards(){
+    var c=$("#tplCards"); c.innerHTML="";
+    var ts=getTpls();
+    if(!ts.length){ c.innerHTML='<div class="tpl-empty">Você ainda não tem modelos.<br>Toque no <b>+</b> e crie o primeiro 💙</div>'; return; }
+    ts.forEach(function(t){
+      var el=document.createElement("div"); el.className="tplcard"; el.setAttribute("data-id",t.id);
+      el.innerHTML='<div class="tc-main"><div class="tc-name">'+esc(t.name)+'</div><div class="tc-sub">'+esc(tplSubtitle(t))+'</div></div>'
+        +'<button class="tc-del" data-id="'+t.id+'">✕</button>'
+        +'<div class="tc-go">›</div>';
+      c.appendChild(el);
+    });
+  }
+  $("#tplCards").addEventListener("click", function(e){
+    var del=e.target.closest(".tc-del");
+    if(del){
+      if(del.getAttribute("data-armed")!=="1"){
+        del.setAttribute("data-armed","1"); del.classList.add("armed"); del.textContent="Excluir?";
+        del._t=setTimeout(function(){ del.setAttribute("data-armed","0"); del.classList.remove("armed"); del.textContent="✕"; },3000);
+        return;
+      }
+      clearTimeout(del._t);
+      var id=del.getAttribute("data-id");
+      setTpls(getTpls().filter(function(t){return String(t.id)!==String(id);}));
+      renderTplCards(); toast("Modelo excluído"); return;
+    }
+    var card=e.target.closest(".tplcard"); if(!card)return;
+    var cid=card.getAttribute("data-id"), ts=getTpls(), tpl=null;
+    for(var i=0;i<ts.length;i++){ if(String(ts[i].id)===String(cid)){tpl=ts[i];break;} }
+    if(tpl) openTpl(tpl);
+  });
+
+  /* ---- save as template ---- */
+  function showSaveForm(){ $("#saveForm").style.display=""; $("#saveTplBtn").style.display="none"; $("#tplName").focus(); }
+  function hideSaveForm(){
+    $("#saveForm").style.display="none"; $("#saveTplBtn").style.display="";
+    var n=$("#tplName"); if(n)n.value="";
+    fixSel=true;
+    var btns=$("#saveForm").querySelectorAll("[data-fix]");
+    for(var i=0;i<btns.length;i++){ btns[i].classList.toggle("active", btns[i].getAttribute("data-fix")==="1"); }
+  }
+  $("#saveTplBtn").addEventListener("click", showSaveForm);
+  $("#saveForm").addEventListener("click", function(e){
+    var b=e.target.closest("[data-fix]"); if(!b)return;
+    fixSel=(b.getAttribute("data-fix")==="1");
+    var btns=$("#saveForm").querySelectorAll("[data-fix]");
+    for(var i=0;i<btns.length;i++){ btns[i].classList.toggle("active", btns[i]===b); }
+  });
+  $("#saveTplConfirm").addEventListener("click", function(){
+    var name=$("#tplName").value.trim(), comp=$("#compromisso").value, arr=$("#anchor").value;
+    if(!name){ $("#tplName").focus(); toast("Dê um nome ao modelo"); return; }
+    if(!comp || !arr){ toast("Preencha os 2 horários primeiro"); return; }
+    var t={ id:Date.now(), name:name, etapas:blocks.map(function(b){return [b.label,b.h,b.m];}),
+            anteMin: toMin(comp)-toMin(arr), fixedComp: fixSel?toMin(comp):null };
+    var ts=getTpls(); ts.push(t); setTpls(ts);
+    hideSaveForm(); toast("Modelo salvo 💙"); showHome();
+  });
+
+  /* ---- FAB + sheet ---- */
+  function renderSheet(){
+    var c=$("#sheetTpls"); c.innerHTML="";
+    var ts=getTpls();
+    if(!ts.length){ c.innerHTML='<div class="tpl-empty" style="margin-top:8px">Nenhum modelo ainda.</div>'; return; }
+    ts.forEach(function(t){
+      var b=document.createElement("button"); b.className="sheet-item";
+      b.innerHTML='<span>'+esc(t.name)+'</span><span class="si-sub">'+esc(tplSubtitle(t))+'</span>';
+      onTap(b, function(){ closeSheet(); openTpl(t); });
+      c.appendChild(b);
+    });
+  }
+  function openSheet(){ renderSheet(); $("#sheet").classList.add("open"); $("#backdrop").style.display="block"; }
+  function closeSheet(){ $("#sheet").classList.remove("open"); $("#backdrop").style.display="none"; }
+  onTap($("#fab"), openSheet);
+  onTap($("#backdrop"), closeSheet);
+  onTap($("#sheetNew"), function(){ closeSheet(); openNew(); });
+
+  /* ---- blocks ---- */
+  function rowHTML(b){
+    return '<div class="block-top">'
+      + '<input class="block-label" data-f="label" value="'+esc(b.label)+'">'
+      + '<button class="rm" title="remover">✕</button>'
+      + '</div>'
+      + '<div class="dur">'
+      + '<span class="dl">duração</span>'
+      + '<input class="d-h" data-f="h" type="number" inputmode="numeric" min="0" max="12" value="'+b.h+'"><span class="u">h</span>'
+      + '<button class="step" data-step="m-">–</button>'
+      + '<input class="d-m" data-f="m" type="number" inputmode="numeric" min="0" max="59" value="'+b.m+'"><span class="u">min</span>'
+      + '<button class="step" data-step="m+">+</button>'
+      + '</div>';
+  }
+  function renderBlocks(){
+    var c=$("#blocks"); c.innerHTML="";
+    blocks.forEach(function(b){
+      var el=document.createElement("div"); el.className="block"; el.dataset.id=b.id;
+      el.innerHTML=rowHTML(b); c.appendChild(el);
+    });
+  }
+  function findBlock(id){ for(var i=0;i<blocks.length;i++){if(blocks[i].id==id)return blocks[i];} return null; }
+
+  $("#blocks").addEventListener("input", function(e){
+    var t=e.target, f=t.dataset.f; if(!f)return;
+    var b=findBlock(t.closest(".block").dataset.id); if(!b)return;
+    if(f==="label"){ b.label=t.value; }
+    else if(f==="h"){ var h=parseInt(t.value||0,10); b.h=isNaN(h)?0:Math.max(0,Math.min(12,h)); }
+    else if(f==="m"){ var m=parseInt(t.value||0,10); b.m=isNaN(m)?0:Math.max(0,Math.min(59,m)); }
+    compute();
+  });
+  $("#blocks").addEventListener("click", function(e){
+    var row=e.target.closest(".block"); if(!row)return; var b=findBlock(row.dataset.id); if(!b)return;
+    if(e.target.classList.contains("rm")){ blocks=blocks.filter(function(x){return x.id!=b.id;}); renderBlocks(); compute(); return; }
+    var st=e.target.dataset.step;
+    if(st==="m+"){ b.m+=5; if(b.m>=60){b.m-=60;b.h=Math.min(12,b.h+1);} }
+    else if(st==="m-"){ b.m-=5; if(b.m<0){ if(b.h>0){b.h--;b.m+=60;} else {b.m=0;} } }
+    if(st){ row.querySelector(".d-h").value=b.h; row.querySelector(".d-m").value=b.m; compute(); }
+  });
+  $("#addrow").addEventListener("click", function(e){
+    var btn=e.target.closest("button"); if(!btn)return;
+    if(btn.hasAttribute("data-custom")){
+      var nb={id:uid++, label:"Nova etapa", h:0, m:15}; blocks.push(nb); renderBlocks(); compute();
+      var row=document.querySelector('#blocks .block[data-id="'+nb.id+'"]');
+      if(row){ var inp=row.querySelector(".block-label"); inp.focus(); if(inp.select)inp.select(); }
+      return;
+    }
+    var d=btn.dataset.add; if(!d)return; var p=d.split("|");
+    blocks.push({id:uid++, label:p[0], h:parseInt(p[1],10), m:parseInt(p[2],10)}); renderBlocks(); compute();
+  });
+
+  /* ---- compute ---- */
+  $("#event").addEventListener("input", compute);
+  $("#compromisso").addEventListener("input", function(){
+    if(tplAnte!=null && $("#compromisso").value && !$("#anchor").value){
+      $("#anchor").value = toHHMM(toMin($("#compromisso").value) - tplAnte);
+    }
+    compute();
+  });
+  $("#anchor").addEventListener("input", compute);
+
+  function compute(){
+    var hero=$("#hero"), big=$("#result"), sub=$("#resultSub"), warm=$("#warm"), tl=$("#timeline");
+    var tComp=$("#compromisso").value, t=$("#anchor").value, ev=$("#event").value.trim();
+    var total=0; blocks.forEach(function(b){total+=b.h*60+b.m;});
+
+    if(!t || !tComp){
+      hero.className="hero empty"; big.textContent="--h--";
+      sub.textContent=(!t&&!tComp)?"Preencha os 2 horários acima ☝️":(!tComp?"Falta: que horas é o compromisso":"Falta: que horas quero chegar");
+      warm.textContent="";
+      tl.innerHTML='<div class="hint" style="margin:0">Defina os 2 horários e as etapas para ver o roteiro.</div>';
+      return;
+    }
+    var compMin=toMin(tComp), anchorMin=toMin(t), startMin=anchorMin-total, ante=compMin-anchorMin;
+
+    hero.className=(ante<0)?"hero warn":"hero";
+    var sc=fmtClock(startMin);
+    big.innerHTML=sc.s+(sc.d<0?'<span class="badge">ontem</span>':"");
+    if(ante<0){
+      sub.textContent='⚠️ Você chega '+fmtDur(-ante)+' depois do compromisso — revise "quero chegar".'; warm.textContent="";
+    }else{
+      sub.textContent="Precisa de "+fmtDur(total)+" de preparo • chega "+(ante===0?"em cima da hora":fmtDur(ante)+" antes")+(ev?" • "+ev:"");
+      warm.textContent="Sai nesse horário e chega tranquila. 💙";
+    }
+
+    tl.innerHTML="";
+    function fixedNode(clk,label,cls,isLast){
+      var d=document.createElement("div"); d.className="tl "+cls;
+      d.innerHTML='<div class="t">'+clk.s+(clk.d<0?'<small> (ontem)</small>':"")+'</div>'
+        +'<div class="col"><div class="dot"></div>'+(isLast?"":'<div class="line"></div>')+'</div>'
+        +'<div class="ln">'+label+'</div>';
+      return d;
+    }
+    tl.appendChild(fixedNode(fmtClock(startMin), "<b>Largar tudo e começar</b>", "start", false));
+    var bc=document.createElement("div"); bc.id="tlblocks"; var run=startMin;
+    blocks.forEach(function(b){
+      var c=fmtClock(run);
+      var row=document.createElement("div"); row.className="tl tlb"; row.dataset.id=b.id;
+      row.innerHTML='<div class="t">'+c.s+(c.d<0?'<small> (ontem)</small>':"")+'</div>'
+        +'<div class="col"><div class="dot"></div><div class="line"></div></div>'
+        +'<div class="ln">'+esc(b.label)+' <small>('+fmtDur(b.h*60+b.m)+')</small></div>'
+        +'<button class="grip" data-drag aria-label="arrastar para reordenar">⋮⋮</button>';
+      bc.appendChild(row); run+=b.h*60+b.m;
+    });
+    tl.appendChild(bc);
+    tl.appendChild(fixedNode(fmtClock(anchorMin), "<b>Chegar"+(ev?" — "+esc(ev):"")+" ✓</b><br><small>compromisso às "+fmtClock(compMin).s+"</small>", "arrive", true));
+  }
+
+  /* ---- arrastar com linha indicadora ---- */
+  (function(){
+    var tl=$("#timeline"); var drag=null;
+    function showIndicator(idx){
+      var ind=drag.ind, snap=drag.snap, top;
+      if(!ind.parentNode) drag.bc.appendChild(ind);
+      if(snap.length===0) top=0;
+      else if(idx>=snap.length){ var L=snap[snap.length-1]; top=L.top+L.h; }
+      else top=snap[idx].top;
+      ind.style.top=(top-1)+"px";
+    }
+    function update(){
+      var mr=drag.row.getBoundingClientRect(), center=mr.top+mr.height/2, n=0;
+      for(var i=0;i<drag.snap.length;i++){ if(drag.snap[i].mid<center) n++; }
+      drag.idx=n; showIndicator(n);
+    }
+    tl.addEventListener("pointerdown", function(e){
+      var handle=e.target.closest(".grip"); if(!handle)return;
+      var row=handle.closest(".tlb"); if(!row)return;
+      var bc=tl.querySelector("#tlblocks"); if(!bc)return;
+      var bcTop=bc.getBoundingClientRect().top, snap=[];
+      bc.querySelectorAll(".tlb").forEach(function(r){
+        if(r===row)return; var rc=r.getBoundingClientRect();
+        snap.push({top:rc.top-bcTop, h:rc.height, mid:rc.top+rc.height/2});
+      });
+      var ind=document.createElement("div"); ind.className="drop-line";
+      drag={row:row, id:row.dataset.id, startY:e.clientY, bc:bc, snap:snap, ind:ind, idx:0};
+      try{ row.setPointerCapture(e.pointerId); }catch(err){}
+      row.classList.add("dragging"); e.preventDefault(); update();
+    });
+    tl.addEventListener("pointermove", function(e){
+      if(!drag)return; drag.row.style.transform="translateY("+(e.clientY-drag.startY)+"px)"; update();
+    });
+    function end(){
+      if(!drag)return; var idx=drag.idx, from=-1;
+      for(var i=0;i<blocks.length;i++){ if(blocks[i].id==drag.id){from=i;break;} }
+      if(from>-1){ var it=blocks.splice(from,1)[0]; blocks.splice(idx,0,it); }
+      if(drag.ind.parentNode) drag.ind.parentNode.removeChild(drag.ind);
+      drag.row.style.transform=""; drag.row.classList.remove("dragging"); drag=null;
+      renderBlocks(); compute();
+    }
+    tl.addEventListener("pointerup", end);
+    tl.addEventListener("pointercancel", end);
+  })();
+
+  /* ---- nav: back / limpar / tema ---- */
+  $("#back").addEventListener("click", showHome);
+  (function(){
+    var rb=$("#reset"), armed=false, timer=null;
+    function disarm(){ armed=false; rb.textContent="↺ Limpar"; rb.classList.remove("armed"); }
+    rb.addEventListener("click", function(){
+      if(!armed){ armed=true; rb.textContent="Confirmar ↺"; rb.classList.add("armed"); timer=setTimeout(disarm,3000); return; }
+      clearTimeout(timer); disarm();
+      tplAnte=null; $("#event").value=""; $("#compromisso").value=""; $("#anchor").value="";
+      blocks=[{id:uid++,label:"Tempo de viagem",h:0,m:20},{id:uid++,label:"Margem de segurança",h:0,m:15}];
+      hideSaveForm(); renderBlocks(); compute(); window.scrollTo(0,0);
+    });
+  })();
+  function setTheme(dark){
+    document.body.classList.toggle("dark", dark);
+    $("#theme").textContent=dark?"☀️":"🌙";
+    document.querySelector('meta[name=theme-color]').setAttribute("content", dark?"#0e151d":"#0d3d6b");
+    try{ localStorage.setItem(THEME_KEY, dark?"1":"0"); }catch(e){}
+  }
+  $("#theme").onclick=function(){ setTheme(!document.body.classList.contains("dark")); };
+
+  /* ---- init ---- */
+  try{ if(localStorage.getItem(THEME_KEY)==="1") setTheme(true); }catch(e){}
+  renderBlocks();
+  showHome();
+})();
+</script>
+</body>
+</html>
