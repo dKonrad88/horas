@@ -37,7 +37,7 @@
     background:rgba(255,255,255,.18);border:0;color:#fff;width:42px;height:42px;
     border-radius:50%;font-size:1.15rem;cursor:pointer
   }
-  .wrap{max-width:540px;margin:0 auto;padding:16px 16px 160px}
+  .wrap{max-width:540px;margin:0 auto;padding:16px 16px 100px}
   .card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;margin-top:14px;box-shadow:var(--shadow)}
   .seclbl{font-size:.74rem;color:var(--muted);font-weight:750;letter-spacing:.6px;text-transform:uppercase;margin:0 4px 8px}
   label.f{display:block;font-size:.82rem;color:var(--muted);margin:0 0 6px;font-weight:650}
@@ -47,13 +47,13 @@
   }
   input.text:focus,input.time:focus{border-color:var(--accent2)}
   input.time{font-size:1.45rem;font-weight:700;text-align:center;letter-spacing:1px}
- 
+
   /* welcome (home) */
   .welcome{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:28px 22px;text-align:center;box-shadow:var(--shadow);margin-top:18px}
   .welcome .wave{font-size:2.1rem}
   .welcome h2{margin:6px 0 10px;font-size:1.45rem}
   .welcome p{margin:0;color:var(--ink);opacity:.85;font-size:1.02rem;line-height:1.6}
- 
+
   /* template cards */
   .tplcard{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:10px;box-shadow:var(--shadow);cursor:pointer}
   .tplcard .tc-main{flex:1;min-width:0}
@@ -63,13 +63,13 @@
   .tplcard .tc-del.armed{color:#ea580c;background:rgba(234,88,12,.09);font-weight:700;font-size:.8rem}
   .tplcard .tc-go{flex:0 0 auto;color:var(--muted);font-size:1.4rem;font-weight:700}
   .tpl-empty{color:var(--muted);font-size:.92rem;line-height:1.5;background:var(--card);border:1.5px dashed var(--line);border-radius:16px;padding:20px;text-align:center;margin-top:10px}
- 
+
   /* calc top */
   .calc-top{display:flex;justify-content:space-between;align-items:center;padding-top:4px}
   .backbtn,.resetbtn{border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:8px 14px;font-size:.88rem;font-weight:650;cursor:pointer}
   .resetbtn{color:var(--muted)}
   .resetbtn.armed{border-color:#ea580c;color:#ea580c;background:rgba(234,88,12,.06)}
- 
+
   /* blocks */
   .block{background:var(--field);border:1px solid var(--line);border-radius:14px;padding:12px 12px 10px;margin-top:10px}
   .block-top{display:flex;gap:8px;align-items:center}
@@ -84,7 +84,7 @@
   .addrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px}
   .addrow button{border:1.5px dashed var(--line);background:transparent;color:var(--accent);border-radius:999px;padding:8px 13px;font-size:.88rem;font-weight:650;cursor:pointer}
   .addrow button[data-custom]{border-style:solid;background:var(--accent);border-color:var(--accent);color:#fff}
- 
+
   /* hero */
   .hero{background:linear-gradient(135deg,#185FA5,#1a7a8a);color:#fff;border-radius:22px;padding:26px 18px;margin-top:16px;text-align:center;box-shadow:var(--shadow)}
   .hero .lbl{font-size:.92rem;opacity:.92;font-weight:650;letter-spacing:.3px}
@@ -95,7 +95,7 @@
   .hero.empty{background:var(--card);color:var(--muted);border:1.5px dashed var(--line);box-shadow:none}
   .hero.empty .big{font-size:2.2rem;color:var(--muted)}
   .hero.warn{background:linear-gradient(135deg,#c2410c,#ea580c)}
- 
+
   /* timeline */
   .timeline{margin-top:6px}
   #tlblocks{position:relative}
@@ -113,17 +113,17 @@
   .tlb.dragging .line{visibility:hidden}
   .drop-line{position:absolute;left:8px;right:8px;height:3px;border-radius:3px;background:var(--accent);box-shadow:0 0 0 3px rgba(24,95,165,.18);pointer-events:none;z-index:6}
   .hint{color:var(--muted);font-size:.81rem;margin:10px 4px 0;line-height:1.4}
- 
+
   /* save as template */
   .btn-outline{width:100%;border:1.5px solid var(--accent);background:var(--card);color:var(--accent);border-radius:13px;padding:13px;font-size:1rem;font-weight:700;cursor:pointer}
   .btn-primary{width:100%;border:0;background:linear-gradient(135deg,#185FA5,#1a7a8a);color:#fff;border-radius:13px;padding:14px;font-size:1.02rem;font-weight:700;cursor:pointer}
   .seg{display:flex;gap:8px}
   .segbtn{flex:1;border:1.5px solid var(--line);background:var(--field);color:var(--ink);border-radius:12px;padding:11px;font-size:.9rem;font-weight:650;cursor:pointer}
   .segbtn.active{background:var(--accent);border-color:var(--accent);color:#fff}
- 
+
   /* FAB */
-  .fab{position:fixed;right:18px;bottom:92px;width:62px;height:62px;border-radius:50%;border:0;background:linear-gradient(135deg,#185FA5,#1a7a8a);color:#fff;font-size:2rem;line-height:1;box-shadow:0 10px 28px rgba(24,95,165,.45);cursor:pointer;z-index:50;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
-  @media (display-mode: standalone){ .fab{bottom:calc(env(safe-area-inset-bottom) + 26px)} }
+  .fab{position:fixed;right:18px;bottom:20px;width:62px;height:62px;border-radius:50%;border:0;background:linear-gradient(135deg,#185FA5,#1a7a8a);color:#fff;font-size:2rem;line-height:1;box-shadow:0 10px 28px rgba(24,95,165,.45);cursor:pointer;z-index:50;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+  @media (display-mode: standalone){ .fab{bottom:calc(env(safe-area-inset-bottom) + 16px)} }
   .sheet-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.42);z-index:60;display:none}
   .sheet{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-radius:24px 24px 0 0;z-index:61;padding:10px 16px calc(env(safe-area-inset-bottom) + 18px);transform:translateY(110%);transition:transform .26s ease;max-height:78vh;overflow:auto;box-shadow:0 -10px 30px rgba(0,0,0,.18)}
   .sheet.open{transform:translateY(0)}
@@ -134,7 +134,7 @@
   .sheet-item .si-sub{font-size:.8rem;font-weight:600;color:var(--muted)}
   .sheet-item.new .si-sub{color:rgba(255,255,255,.85)}
   .sheet-sub{font-size:.74rem;color:var(--muted);font-weight:750;letter-spacing:.6px;text-transform:uppercase;margin:16px 4px 2px}
- 
+
   /* toast */
   .toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 96px);transform:translateX(-50%) translateY(16px);background:#16202b;color:#fff;padding:11px 18px;border-radius:999px;font-size:.9rem;font-weight:600;opacity:0;transition:.25s;z-index:70;pointer-events:none}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -146,9 +146,9 @@
     <button class="theme" id="theme" aria-label="Tema">🌙</button>
     <h1>Que horas sair?</h1>
   </div>
- 
+
   <div class="wrap">
- 
+
     <!-- HOME -->
     <div id="home">
       <div class="welcome">
@@ -159,14 +159,14 @@
       <div class="seclbl" style="margin-top:18px">Seus modelos</div>
       <div id="tplCards"></div>
     </div>
- 
+
     <!-- CALC -->
     <div id="calc" style="display:none">
       <div class="calc-top">
         <button id="back" class="backbtn">‹ Início</button>
         <button id="reset" class="resetbtn">↺ Limpar</button>
       </div>
- 
+
       <div class="card" style="margin-top:12px">
         <label class="f" for="event">O que é? <span style="font-weight:500">(opcional)</span></label>
         <input class="text" id="event" placeholder="Ex.: Voo, Massagem, Médico da Aurora" autocomplete="off">
@@ -177,7 +177,7 @@
         <label class="f" for="anchor">Que horas quero chegar? <span style="color:#e5484d">*</span></label>
         <input class="time" id="anchor" type="time">
       </div>
- 
+
       <div class="seclbl" style="margin-top:18px">O que vem antes</div>
       <div class="card">
         <div id="blocks"></div>
@@ -191,21 +191,21 @@
           <button data-add="Trânsito|0|15">+ Trânsito</button>
         </div>
       </div>
- 
+
       <div class="hero empty" id="hero">
         <div class="lbl">Saia às</div>
         <div class="big" id="result">--h--</div>
         <div class="sub" id="resultSub">Preencha os 2 horários acima ☝️</div>
         <div class="warm" id="warm"></div>
       </div>
- 
+
       <div class="seclbl" style="margin-top:18px">Seu roteiro</div>
       <div class="card">
         <div class="timeline" id="timeline"></div>
       </div>
- 
+
       <div class="hint">Dica: arraste pelo <b>⋮⋮</b> para reordenar as etapas do meio. "Largar tudo e começar" e "Chegar" ficam fixos — e o horário de saída nunca muda. 💙</div>
- 
+
       <div class="card">
         <button id="saveTplBtn" class="btn-outline">💾 Salvar como modelo</button>
         <div id="saveForm" style="display:none">
@@ -222,12 +222,12 @@
           <button id="saveTplConfirm" class="btn-primary">Salvar modelo 💙</button>
         </div>
       </div>
- 
+
     </div>
   </div>
- 
+
   <button type="button" class="fab" id="fab" aria-label="Novo">+</button>
- 
+
   <div class="sheet-backdrop" id="backdrop"></div>
   <div class="sheet" id="sheet">
     <div class="sheet-handle"></div>
@@ -235,9 +235,9 @@
     <div class="sheet-sub">Seus modelos</div>
     <div id="sheetTpls"></div>
   </div>
- 
+
   <div class="toast" id="toast"></div>
- 
+
 <script>
 (function(){
   "use strict";
@@ -252,7 +252,7 @@
   }
   var THEME_KEY="qhs_theme", TPL_KEY="qhs_templates";
   var blocks=[], uid=1, tplAnte=null, fixSel=true, toastTimer=null;
- 
+
   /* ---- helpers ---- */
   function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
   function pad(n){return (n<10?"0":"")+n;}
@@ -261,7 +261,7 @@
   function toMin(s){ var p=s.split(":"); return parseInt(p[0],10)*60+parseInt(p[1],10); }
   function toHHMM(m){ m=((m%1440)+1440)%1440; return pad(Math.floor(m/60))+":"+pad(m%60); }
   function toast(msg){ var t=$("#toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(toastTimer); toastTimer=setTimeout(function(){t.classList.remove("show");},1900); }
- 
+
   /* ---- templates storage ---- */
   function getTpls(){ try{return JSON.parse(localStorage.getItem(TPL_KEY))||[];}catch(e){return [];} }
   function setTpls(a){ try{localStorage.setItem(TPL_KEY,JSON.stringify(a));}catch(e){} }
@@ -272,11 +272,11 @@
     parts.push(n+(n===1?" etapa":" etapas"));
     return parts.join(" • ");
   }
- 
+
   /* ---- views ---- */
   function showHome(){ $("#home").style.display=""; $("#calc").style.display="none"; renderTplCards(); window.scrollTo(0,0); }
   function showCalc(){ $("#home").style.display="none"; $("#calc").style.display=""; window.scrollTo(0,0); }
- 
+
   function openNew(){
     tplAnte=null;
     $("#event").value=""; $("#compromisso").value=""; $("#anchor").value="";
@@ -296,7 +296,7 @@
     }
     hideSaveForm(); renderBlocks(); compute(); showCalc();
   }
- 
+
   /* ---- template cards (home) ---- */
   function renderTplCards(){
     var c=$("#tplCards"); c.innerHTML="";
@@ -328,7 +328,7 @@
     for(var i=0;i<ts.length;i++){ if(String(ts[i].id)===String(cid)){tpl=ts[i];break;} }
     if(tpl) openTpl(tpl);
   });
- 
+
   /* ---- save as template ---- */
   function showSaveForm(){ $("#saveForm").style.display=""; $("#saveTplBtn").style.display="none"; $("#tplName").focus(); }
   function hideSaveForm(){
@@ -354,7 +354,7 @@
     var ts=getTpls(); ts.push(t); setTpls(ts);
     hideSaveForm(); toast("Modelo salvo 💙"); showHome();
   });
- 
+
   /* ---- FAB + sheet ---- */
   function renderSheet(){
     var c=$("#sheetTpls"); c.innerHTML="";
@@ -372,7 +372,7 @@
   onTap($("#fab"), openSheet);
   onTap($("#backdrop"), closeSheet);
   onTap($("#sheetNew"), function(){ closeSheet(); openNew(); });
- 
+
   /* ---- blocks ---- */
   function rowHTML(b){
     return '<div class="block-top">'
@@ -395,7 +395,7 @@
     });
   }
   function findBlock(id){ for(var i=0;i<blocks.length;i++){if(blocks[i].id==id)return blocks[i];} return null; }
- 
+
   $("#blocks").addEventListener("input", function(e){
     var t=e.target, f=t.dataset.f; if(!f)return;
     var b=findBlock(t.closest(".block").dataset.id); if(!b)return;
@@ -423,7 +423,7 @@
     var d=btn.dataset.add; if(!d)return; var p=d.split("|");
     blocks.push({id:uid++, label:p[0], h:parseInt(p[1],10), m:parseInt(p[2],10)}); renderBlocks(); compute();
   });
- 
+
   /* ---- compute ---- */
   $("#event").addEventListener("input", compute);
   $("#compromisso").addEventListener("input", function(){
@@ -433,12 +433,12 @@
     compute();
   });
   $("#anchor").addEventListener("input", compute);
- 
+
   function compute(){
     var hero=$("#hero"), big=$("#result"), sub=$("#resultSub"), warm=$("#warm"), tl=$("#timeline");
     var tComp=$("#compromisso").value, t=$("#anchor").value, ev=$("#event").value.trim();
     var total=0; blocks.forEach(function(b){total+=b.h*60+b.m;});
- 
+
     if(!t || !tComp){
       hero.className="hero empty"; big.textContent="--h--";
       sub.textContent=(!t&&!tComp)?"Preencha os 2 horários acima ☝️":(!tComp?"Falta: que horas é o compromisso":"Falta: que horas quero chegar");
@@ -447,7 +447,7 @@
       return;
     }
     var compMin=toMin(tComp), anchorMin=toMin(t), startMin=anchorMin-total, ante=compMin-anchorMin;
- 
+
     hero.className=(ante<0)?"hero warn":"hero";
     var sc=fmtClock(startMin);
     big.innerHTML=sc.s+(sc.d<0?'<span class="badge">ontem</span>':"");
@@ -457,7 +457,7 @@
       sub.textContent="Precisa de "+fmtDur(total)+" de preparo • chega "+(ante===0?"em cima da hora":fmtDur(ante)+" antes")+(ev?" • "+ev:"");
       warm.textContent="Sai nesse horário e chega tranquila. 💙";
     }
- 
+
     tl.innerHTML="";
     function fixedNode(clk,label,cls,isLast){
       var d=document.createElement("div"); d.className="tl "+cls;
@@ -480,7 +480,7 @@
     tl.appendChild(bc);
     tl.appendChild(fixedNode(fmtClock(anchorMin), "<b>Chegar"+(ev?" — "+esc(ev):"")+" ✓</b><br><small>compromisso às "+fmtClock(compMin).s+"</small>", "arrive", true));
   }
- 
+
   /* ---- arrastar com linha indicadora ---- */
   (function(){
     var tl=$("#timeline"); var drag=null;
@@ -525,7 +525,7 @@
     tl.addEventListener("pointerup", end);
     tl.addEventListener("pointercancel", end);
   })();
- 
+
   /* ---- nav: back / limpar / tema ---- */
   $("#back").addEventListener("click", showHome);
   (function(){
@@ -546,7 +546,7 @@
     try{ localStorage.setItem(THEME_KEY, dark?"1":"0"); }catch(e){}
   }
   $("#theme").onclick=function(){ setTheme(!document.body.classList.contains("dark")); };
- 
+
   /* ---- init ---- */
   try{ if(localStorage.getItem(THEME_KEY)==="1") setTheme(true); }catch(e){}
   renderBlocks();
